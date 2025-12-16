@@ -1,0 +1,39 @@
+[project]
+name = "lunch-bot"
+version = "1.0.0"
+description = "Bot for sending daily lunch menu."
+authors = [
+    {name = "Lukas Matuska", email = "lukas.matuska@tescan.com"},
+]
+dependencies = [
+    "pylint[spelling]>=3.1.0",
+    "regex>=2023.12.25",
+    "Pillow>=10.2.0",
+    "pytesseract>=0.3.10",
+    "beautifulsoup4>=4.12.3",
+    "python-dotenv>=1.0.1",
+    "requests>=2.32.3",
+    "pypdf>=5.3.1",
+]
+requires-python = ">=3.10.0"
+readme = "README.md"
+license = {text = "Beerware"}
+
+[tool.pdm]
+distribution = false
+
+[tool.pdm.scripts]
+bonami = "python -m src.scrappers.bonami"
+bernard = "python -m src.scrappers.bernard"
+gourmet = "python -m src.scrappers.gourmet"
+hasicka = "python -m src.scrappers.hasicka"
+pepe = "python -m src.scrappers.pepe"
+leharo = "python -m src.scrappers.leharo"
+ukohoutu = "python -m src.scrappers.ukohoutu"
+
+lint = "pylint main.py src/"
+
+[dependency-groups]
+dev = [
+    "pre-commit>=4.5.0",
+]
