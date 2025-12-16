@@ -15,6 +15,7 @@ dependencies = [
     "requests>=2.32.3",
     "pypdf>=5.3.1",
     "redmail>=0.6.0",
+    "apscheduler>=3.11.1",
 ]
 requires-python = ">=3.10.0"
 readme = "README.md"

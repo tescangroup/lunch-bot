@@ -6,7 +6,9 @@ services:
     restart: always
     environment:
       - LUNCH_CHANNEL_EMAIL_ADDRESS
-      - LUNCH_TIME
+      - LUNCH_DAY_OF_WEEK
+      - LUNCH_HOUR
+      - LUNCH_MINUTES
       - TZ
       - SMTP_HOST
       - SMTP_PORT

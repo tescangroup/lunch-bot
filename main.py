@@ -1,9 +1,17 @@
-#!/usr/local/bin/python3
+#!/usr/bin/env python3
 
-"""Module for running Lunch bot"""
+"""Entry point for the Lunch bot scheduler.
 
-from src.services.lunch import get_all_menus, send_menus_to_teams
+This script initializes and starts the internal APScheduler-based scheduler,
+which periodically runs the Lunch bot tasks (such as collecting daily menus
+from the configured scrapers and sending formatted messages to Microsoft Teams).
+It replaces the need for a system-level cron job and keeps all scheduling logic
+within the Python application itself.
+"""
+
+
+from src.services.scheduler import main as start_scheduler
 
 
 if __name__ == "__main__":
-    send_menus_to_teams(get_all_menus())
+    start_scheduler()
