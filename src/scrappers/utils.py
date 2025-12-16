@@ -8,7 +8,7 @@ class MenuItem:
     MenuItem class represents a single item on the menu.
     """
 
-    def __init__(self, name, price=None):
+    def __init__(self, name: str, price: str = None):
         """
         Parameters
         ----------
@@ -38,7 +38,7 @@ class Menu:
     Menu class represents a menu for a single day.
     """
 
-    def __init__(self, name, items, day, date):
+    def __init__(self, name: str, items: list[MenuItem], day: str, date: str):
         """
         Parameters
         ----------
