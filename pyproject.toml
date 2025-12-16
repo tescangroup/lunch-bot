@@ -31,6 +31,7 @@ hasicka = "python -m src.scrappers.hasicka"
 pepe = "python -m src.scrappers.pepe"
 leharo = "python -m src.scrappers.leharo"
 ukohoutu = "python -m src.scrappers.ukohoutu"
+natrati = "python -m src.scrappers.natrati"
 
 lint = "pylint main.py src/"
 
