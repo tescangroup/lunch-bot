@@ -4,7 +4,7 @@ import re
 import requests
 from bs4 import BeautifulSoup
 
-from .utils import Menu, MenuItem
+from .utils import is_monday, Menu, MenuItem
 
 
 def get_natrati_menu(url: str = "https://www.restauracenatrati.cz") -> Menu:
@@ -22,6 +22,9 @@ def get_natrati_menu(url: str = "https://www.restauracenatrati.cz") -> Menu:
         Menu object containing menu items for the current day.
     """
     # pylint: disable=R0914,R0912
+
+    if is_monday():
+        return Menu("Na trati", [MenuItem("Restaurace je v pondělí zavřená", "")], "", "")
 
     html_content = requests.get(url, timeout=10).text
     soup = BeautifulSoup(html_content, "html.parser")

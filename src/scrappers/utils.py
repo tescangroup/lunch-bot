@@ -1,5 +1,19 @@
 """Module for easier work with menus"""
+from datetime import datetime
 import json
+
+
+def is_monday() -> bool:
+    """
+    Check if today is Monday.
+
+    Returns
+    -------
+    bool
+        True if today is Monday, False otherwise.
+    """
+
+    return datetime.now().weekday() == 0
 
 
 class MenuItem:
