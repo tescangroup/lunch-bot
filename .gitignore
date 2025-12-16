@@ -168,3 +168,7 @@ pdm.lock
 .pdm.toml
 .pdm-python
 .pdm-build/
+
+# Docker Compose files
+docker-compose.yml
+docker-compose.override.yml
