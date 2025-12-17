@@ -20,7 +20,7 @@ def get_name_of_current_day() -> str:
     return day_dict[datetime.now().strftime("%A").lower()]
 
 def get_leharo_menu(url: str = "https://dejsileharo.cz/bistroleharo-poledni-menu/") -> Menu:
-    # pylint: disable=R0914,R0915,R0801,W0718
+    # pylint: disable=R0914,R0915,R0801,W0718,R0912
     """
     Parameters
     ----------
@@ -91,16 +91,20 @@ def get_leharo_menu(url: str = "https://dejsileharo.cz/bistroleharo-poledni-menu
         # find current date span and check current date belongs to it
 
         # find the menu for the current day using regex
-        start_line = 0
+        start_line = -1
+        tip_line = -1
         current_day_regex = re.compile(f".*{current_day}.*".upper())
+        tip_regex = re.compile(".*tip týdne.*".upper())
 
         for lnum, line in enumerate(menu_lines):
             day_header = current_day_regex.match(line)
+            tip_header = tip_regex.match(line)
             if day_header:
                 start_line = lnum
-                break
+            if tip_header:
+                tip_line = lnum
 
-        if not day_header:
+        if start_line < 0:
             return ret_menu
 
         soup_of_the_day = ""
@@ -123,6 +127,20 @@ def get_leharo_menu(url: str = "https://dejsileharo.cz/bistroleharo-poledni-menu
                 menu_price = menu_match.group(2).strip() + " Kč"
                 menu_obj = MenuItem(menu_description, menu_price)
                 menu_objs.append(menu_obj)
+
+        tip_first_line = ""
+        for lnum, line in enumerate(menu_lines[tip_line+1:]):
+            menu_match = menu_regex.match(line)
+            if menu_match:
+                menu_description = menu_match.group(1).strip()
+                menu_price = menu_match.group(2).strip() + " Kč"
+                menu_obj = MenuItem(tip_first_line + " (" + menu_description + ")", menu_price)
+                menu_objs.append(menu_obj)
+                break
+            tip_match = soup_regex.match(line)
+            if tip_match:
+                tip_first_line = tip_match.group(0).strip()
+
 
         menu = Menu("Leháro", menu_objs, current_day, current_date)
     # if the menu for the current day is not found, return a menu not found message
