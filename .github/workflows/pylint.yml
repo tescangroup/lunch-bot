@@ -1,0 +1,43 @@
+name: Pylint
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install PDM
+        uses: pdm-project/setup-pdm@v4
+        with:
+          python-version: "3.12"
+          cache: true
+
+      - name: Install dependencies (including dev)
+        run: pdm install -d
+
+      - name: Run Pylint (console output)
+        run: pdm run lint
+
+      - name: Generate Pylint JSON report
+        # For export: manually run pylint with JSON output format
+        run: pdm run pylint main.py src/ --output-format=json > pylint-report.json
+        # This phase always runs even if the previous lint fails
+        if: always()
+
+      - name: Upload Pylint report artifact
+        uses: actions/upload-artifact@v4
+        if: failure()  # << Artifact only if lint fails
+        with:
+          name: pylint-report
+          path: pylint-report.json
