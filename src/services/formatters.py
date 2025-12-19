@@ -4,7 +4,7 @@ from datetime import datetime
 from src.scrappers.utils import Menu, day_dict
 
 
-def get_czech_day_name(date: datetime = datetime.today()) -> str:
+def get_czech_day_name(date: datetime | None = None) -> str:
     """
     Return the Czech name of the weekday for the given date.
 
@@ -14,11 +14,13 @@ def get_czech_day_name(date: datetime = datetime.today()) -> str:
     Returns:
         str: The Czech weekday name with the first letter capitalized.
     """
+    if date is None:
+        date = datetime.today()
     czech_day_name = day_dict[date.strftime("%A").lower()]
     return czech_day_name.capitalize()
 
 
-def get_czech_date(date: datetime = datetime.today()) -> str:
+def get_czech_date(date: datetime | None = None) -> str:
     """
     Return a Czech-formatted date string in the form 'D. M.' without leading zeros.
 
@@ -28,6 +30,8 @@ def get_czech_date(date: datetime = datetime.today()) -> str:
     Returns:
         str: The formatted date string in Czech style.
     """
+    if date is None:
+        date = datetime.today()
     return date.strftime("%d. %m.").replace(" 0", " ")
 
 
