@@ -110,19 +110,26 @@ def get_leharo_menu(url: str = "https://dejsileharo.cz/bistroleharo-poledni-menu
         soup_of_the_day = ""
         # get the soup of the day and the rest of the menu items
         soup_regex = re.compile(r"^\s*(\S.*\S)\s*$")
-        menu_regex = re.compile(r"^\s*(\S.*\S)\s+(\d+)\s*,*-*\s*$")
+        menu_regex = re.compile(r"^\s*(\S.*\S)\s+(\d+)\s*\W*\s*$")
         menu_objs = []
         soup_was = False
+        menu_part = ""
         for lnum, line in enumerate(menu_lines[start_line+1:]):
             menu_match = menu_regex.match(line)
             soup_match = soup_regex.match(line)
             if not menu_match and (soup_was or not soup_match):
-                break
+                if menu_part != "":
+                    break
+                menu_part = line
+                continue
             if soup_match and not soup_was:
                 soup_of_the_day = soup_match.group(0).strip()
                 menu_objs.append(MenuItem(soup_of_the_day, ""))
                 soup_was = True
             if menu_match:
+                if menu_part != "":
+                    menu_match = menu_regex.match(menu_part + line)
+                    menu_part = ""
                 menu_description = menu_match.group(1).strip()
                 menu_price = menu_match.group(2).strip() + " Kč"
                 menu_obj = MenuItem(menu_description, menu_price)
